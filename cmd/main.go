@@ -33,13 +33,14 @@ func NewHandler() *handler.Handler {
 	if err != nil {
 		panic(err)
 	}
-	Product :=sale.NewProductClient(connSale)
+	Product := sale.NewProductClient(connSale)
 	Process := sale.NewProcessClient(connSale)
 	Wishlis := sale.NewWishlistClient(connSale)
 	Feedback := sale.NewFeedbackClient(connSale)
 	Bought := sale.NewBoughtClient(connSale)
 	User := user.NewUserClient(connUser)
 	Notification := user.NewNotificationsClient(connUser)
+	Card := user.NewCardsClient(connUser)
 
 	logs := logs.NewLogger()
 	en, err := casbin.CasbinEnforcer(logs)
@@ -47,14 +48,15 @@ func NewHandler() *handler.Handler {
 		log.Fatal("error in creating casbin enforcer", err)
 	}
 	return &handler.Handler{
-		User:             User,
-		Product:          Product,
-		Process:          Process,
-		Wishlis:          Wishlis,
-		Feedback:         Feedback,
-		Bought:           Bought,
-		Notification:     Notification,
-		Log:              logs,
-		Enforcer:         en,
+		User:         User,
+		Product:      Product,
+		Process:      Process,
+		Wishlis:      Wishlis,
+		Feedback:     Feedback,
+		Bought:       Bought,
+		Notification: Notification,
+		Cards:        Card,
+		Log:          logs,
+		Enforcer:     en,
 	}
 }

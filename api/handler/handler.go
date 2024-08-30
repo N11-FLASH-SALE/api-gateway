@@ -16,8 +16,7 @@ type Handler struct {
 	Feedback     sale.FeedbackClient
 	Bought       sale.BoughtClient
 	Notification user.NotificationsClient
+	Cards        user.CardsClient
 	Log          *slog.Logger
 	Enforcer     *casbin.Enforcer
 }
-
-
