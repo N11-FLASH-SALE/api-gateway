@@ -23,6 +23,5 @@ func Router(hand *handler.Handler) *gin.Engine {
 	router.Use(middleware.Check)
 	router.Use(middleware.CheckPermissionMiddleware(hand.Enforcer))
 
-
 	return router
 }

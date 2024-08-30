@@ -1,11 +1,13 @@
 package auth
 
 import (
+	"api/config"
+
 	"github.com/dgrijalva/jwt-go"
 )
 
-const (
-	signingkey = "sdfghjkjhgfdfghjk"
+var (
+	acceskey = config.Load().ACCES_KEY
 )
 
 func ValidateAccessToken(tokenStr string) (bool, error) {
@@ -18,10 +20,10 @@ func ValidateAccessToken(tokenStr string) (bool, error) {
 
 func ExtractAccessClaim(tokenStr string) (*jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
-		return []byte(signingkey), nil
+		return []byte(acceskey), nil
 	})
 
-	if err != nil {
+	if err != nil || !token.Valid {
 		return nil, err
 	}
 
@@ -34,16 +36,13 @@ func ExtractAccessClaim(tokenStr string) (*jwt.MapClaims, error) {
 }
 
 func GetUserInfoFromAccessToken(accessTokenString string) (string, string, error) {
-	refreshToken, err := jwt.Parse(accessTokenString, func(token *jwt.Token) (interface{}, error) { return []byte(signingkey), nil })
-	if err != nil || !refreshToken.Valid {
+	claims, err := ExtractAccessClaim(accessTokenString)
+	if err != nil {
 		return "", "", err
 	}
-	claims, ok := refreshToken.Claims.(jwt.MapClaims)
-	if !ok {
-		return "", "", err
-	}
-	userID := claims["user_id"].(string)
-	Role := claims["role"].(string)
+
+	userID := (*claims)["user_id"].(string)
+	Role := (*claims)["role"].(string)
 
 	return userID, Role, nil
 }
