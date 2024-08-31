@@ -51,7 +51,7 @@ func CasbinEnforcer(logger *slog.Logger) (*casbin.Enforcer, error) {
 	}
 
 	policies := [][]string{
-		//card
+		//card +
 		{"consumer", "/cards", "POST"},
 		{"seller", "/cards", "POST"},
 		{"consumer", "/cards", "GET"},
@@ -60,7 +60,7 @@ func CasbinEnforcer(logger *slog.Logger) (*casbin.Enforcer, error) {
 		{"seller", "/cards/amount", "GET"},
 
 		// product
-		{"seller", "/products", "POST"},
+		{"seller", "/products", "POST"}, 
 		{"seller", "/products/list", "POST"},
 		{"consumer", "/products/list", "POST"},
 		{"admin", "/products/list", "POST"},
@@ -73,7 +73,7 @@ func CasbinEnforcer(logger *slog.Logger) (*casbin.Enforcer, error) {
 		{"seller", "/products/photo/:product_id", "DELETE"},
 
 		// process
-		{"consumer", "/process", "POSTS"},
+		{"consumer", "/process", "POST"}, 
 		{"seller", "/process/:product_id", "GET"},
 		{"admin", "/process/:product_id", "GET"},
 		{"admin", "/process/:product_id/:user_id", "GET"},
