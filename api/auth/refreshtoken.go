@@ -7,20 +7,20 @@ import (
 )
 
 var (
-	acceskey = config.Load().ACCES_KEY
+	refresh = config.Load().REFRESH_KEY
 )
 
-func ValidateAccessToken(tokenStr string) (bool, error) {
-	_, err := ExtractAccessClaim(tokenStr)
+func ValidateRefreshToken(tokenStr string) (bool, error) {
+	_, err := ExtractRefreshClaim(tokenStr)
 	if err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-func ExtractAccessClaim(tokenStr string) (*jwt.MapClaims, error) {
+func ExtractRefreshClaim(tokenStr string) (*jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
-		return []byte(acceskey), nil
+		return []byte(refresh), nil
 	})
 
 	if err != nil || !token.Valid {
@@ -35,8 +35,8 @@ func ExtractAccessClaim(tokenStr string) (*jwt.MapClaims, error) {
 	return &claims, nil
 }
 
-func GetUserInfoFromAccessToken(accessTokenString string) (string, string, error) {
-	claims, err := ExtractAccessClaim(accessTokenString)
+func GetUserInfoFromRefreshToken(refreshTokenString string) (string, string, error) {
+	claims, err := ExtractRefreshClaim(refreshTokenString)
 	if err != nil {
 		return "", "", err
 	}

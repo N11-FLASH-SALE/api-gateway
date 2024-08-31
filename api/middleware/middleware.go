@@ -15,15 +15,15 @@ type casbinPermission struct {
 
 func Check(c *gin.Context) {
 
-	accessToken := c.GetHeader("Authorization")
-	if accessToken == "" {
+	refresh := c.GetHeader("Authorization")
+	if refresh == "" {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": "Authorization is required",
 		})
 		return
 	}
 
-	_, err := auth.ValidateAccessToken(accessToken)
+	_, err := auth.ValidateRefreshToken(refresh)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": "Invalid token provided",
@@ -38,7 +38,7 @@ func (casb *casbinPermission) GetRole(c *gin.Context) (string, int) {
 	if token == "" {
 		return "unauthorized", http.StatusUnauthorized
 	}
-	_, role, err := auth.GetUserInfoFromAccessToken(token)
+	_, role, err := auth.GetUserInfoFromRefreshToken(token)
 	if err != nil {
 		return "error while reding role", 500
 	}
