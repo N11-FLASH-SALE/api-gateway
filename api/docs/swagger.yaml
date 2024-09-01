@@ -12,15 +12,53 @@ definitions:
     - ccv
     - expiration_date
     type: object
+  user.Card:
+    properties:
+      card_number:
+        type: string
+      expiration_date:
+        type: string
+      id:
+        type: string
+      user_id:
+        type: string
+    type: object
   user.CreateCardRes:
     properties:
       id:
         type: string
     type: object
+  user.GetCardsOfUserRes:
+    properties:
+      cards:
+        items:
+          $ref: '#/definitions/user.Card'
+        type: array
+    type: object
 info:
   contact: {}
 paths:
   /cards:
+    get:
+      description: it will Get User Cards
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GetCardsOfUserRes'
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get User Cards
+      tags:
+      - CARDS
     post:
       description: it will Create Cards
       parameters:
@@ -50,6 +88,33 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create Cards
+      tags:
+      - CARDS
+  /cards/amount/{card_id}:
+    get:
+      description: it will Get Amount Of User Card
+      parameters:
+      - description: card_id
+        in: path
+        name: card_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GetCardsOfUserRes'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Amount Of User Card
       tags:
       - CARDS
 securityDefinitions:
