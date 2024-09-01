@@ -22,7 +22,7 @@ func main() {
 	log.Fatal(router.Run(conf.API_ROUTER))
 }
 
-func NewHandler() *handler.Handler {
+func NewHandler() handler.HandlerInterface {
 	conf := config.Load()
 	connUser, err := grpc.NewClient(conf.USER_SERVICE, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -51,7 +51,7 @@ func NewHandler() *handler.Handler {
 		User:         User,
 		Product:      Product,
 		Process:      Process,
-		Wishlis:      Wishlis,
+		Wishlist:     Wishlis,
 		Feedback:     Feedback,
 		Bought:       Bought,
 		Notification: Notification,

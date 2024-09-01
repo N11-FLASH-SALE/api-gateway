@@ -17,64 +17,63 @@ import (
 // @version 1.0
 // @description API Gateway
 // BasePath: /
-func Router(hand *handler.Handler) *gin.Engine {
+func Router(h handler.HandlerInterface) *gin.Engine {
 	router := gin.New()
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Use(middleware.Check)
-	router.Use(middleware.CheckPermissionMiddleware(hand.Enforcer))
+	router.Use(h.EnforcerMethods().CheckPermissionMiddleware())
 
 	card := router.Group("/cards")
 	{
-		card.POST("",)
-		card.GET("",)
-		card.GET("/amount",)
+		card.POST("", h.CardsMethods().CreateCards)
+		card.GET("", h.CardsMethods().GetUserCards)
+		card.GET("/amount/:card_id", h.CardsMethods().GetAmountOfUserCard)
 	}
 
 	prd := router.Group("/products")
 	{
-		prd.POST("", )
-		prd.POST("/list", )
-		prd.GET("/:id", )
-		prd.PUT("/:id", )
-		prd.DELETE("/:id", )
-		prd.POST("/photo/:product_id", )
-		prd.DELETE("/photo/:product_id", )
+		prd.POST("")
+		prd.POST("/list")
+		prd.GET("/:id")
+		prd.PUT("/:id")
+		prd.DELETE("/:id")
+		prd.POST("/photo/:product_id")
+		prd.DELETE("/photo/:product_id")
 
 	}
 
 	prcs := router.Group("/process")
 	{
-		prcs.POST("", )
-		prcs.GET("/:prduct_id",)
-		prcs.GET("/:prduct_id/:user_id",)
-		prcs.GET("",)
-		prcs.GET("/:id",)
-		prcs.PUT("/:id",)
+		prcs.POST("")
+		prcs.GET("/products/:product_id")
+		prcs.GET("/user/:product_id/:user_id")
+		prcs.GET("")
+		prcs.GET("/:id")
+		prcs.PUT("/:id")
 		prcs.DELETE("/:id")
 
 	}
 
 	wish := router.Group("/wishlist")
 	{
-		wish.POST("", )
-		wish.GET("", )
-		wish.GET("/:id", )
+		wish.POST("")
+		wish.GET("")
+		wish.GET("/:id")
 	}
 
 	fdbk := router.Group("/feedback")
 	{
-		fdbk.POST("/:product_id", )
-		fdbk.GET("", )
-		fdbk.GET("/:product_id", )
+		fdbk.POST("/:product_id")
+		fdbk.GET("")
+		fdbk.GET("/:product_id")
 
 	}
 
 	bght := router.Group("/bought")
 	{
-		bght.GET("/:product_id", )
-		bght.GET("", )
+		bght.GET("/:product_id")
+		bght.GET("")
 	}
-
 
 	return router
 }

@@ -9,8 +9,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type CasbinPermission interface {
+	GetRole(*gin.Context) (string, int)
+	CheckPermission(*gin.Context) (bool, error)
+	CheckPermissionMiddleware() gin.HandlerFunc
+}
+
 type casbinPermission struct {
 	enforcer *casbin.Enforcer
+}
+
+func NewCasbinPermission(enforcer *casbin.Enforcer) CasbinPermission {
+	return &casbinPermission{enforcer: enforcer}
 }
 
 func Check(c *gin.Context) {
@@ -66,13 +76,9 @@ func (casb *casbinPermission) CheckPermission(c *gin.Context) (bool, error) {
 	return ok, nil
 }
 
-func CheckPermissionMiddleware(enf *casbin.Enforcer) gin.HandlerFunc {
-	casbHandler := &casbinPermission{
-		enforcer: enf,
-	}
-
+func (casb *casbinPermission) CheckPermissionMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		result, err := casbHandler.CheckPermission(c)
+		result, err := casb.CheckPermission(c)
 
 		if err != nil {
 			c.AbortWithError(500, err)

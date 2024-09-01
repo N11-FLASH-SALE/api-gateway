@@ -3,7 +3,88 @@
     "info": {
         "contact": {}
     },
-    "paths": {},
+    "paths": {
+        "/cards": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "it will Create Cards",
+                "tags": [
+                    "CARDS"
+                ],
+                "summary": "Create Cards",
+                "parameters": [
+                    {
+                        "description": "info",
+                        "name": "info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CardRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.CreateCardRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.CardRequest": {
+            "type": "object",
+            "required": [
+                "card_number",
+                "ccv",
+                "expiration_date"
+            ],
+            "properties": {
+                "card_number": {
+                    "type": "string"
+                },
+                "ccv": {
+                    "type": "string"
+                },
+                "expiration_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.CreateCardRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        }
+    },
     "securityDefinitions": {
         "ApiKeyAuth": {
             "description": "API Gateway",

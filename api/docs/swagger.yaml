@@ -1,6 +1,57 @@
+definitions:
+  models.CardRequest:
+    properties:
+      card_number:
+        type: string
+      ccv:
+        type: string
+      expiration_date:
+        type: string
+    required:
+    - card_number
+    - ccv
+    - expiration_date
+    type: object
+  user.CreateCardRes:
+    properties:
+      id:
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /cards:
+    post:
+      description: it will Create Cards
+      parameters:
+      - description: info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/models.CardRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.CreateCardRes'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Cards
+      tags:
+      - CARDS
 securityDefinitions:
   ApiKeyAuth:
     description: API Gateway

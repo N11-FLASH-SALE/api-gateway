@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	host     = "postgres2"
+	host     = "localhost"
 	port     = "5432"
 	dbname   = "casbin"
 	username = "postgres"
@@ -56,8 +56,8 @@ func CasbinEnforcer(logger *slog.Logger) (*casbin.Enforcer, error) {
 		{"seller", "/cards", "POST"},
 		{"consumer", "/cards", "GET"},
 		{"seller", "/cards", "GET"},
-		{"consumer", "/cards/amount", "GET"},
-		{"seller", "/cards/amount", "GET"},
+		{"consumer", "/cards/amount/:card_id", "GET"},
+		{"seller", "/cards/amount/:card_id", "GET"},
 
 		// product
 		{"seller", "/products", "POST"},
@@ -74,9 +74,9 @@ func CasbinEnforcer(logger *slog.Logger) (*casbin.Enforcer, error) {
 
 		// process
 		{"consumer", "/process", "POST"},
-		{"seller", "/process/:product_id", "GET"},
-		{"admin", "/process/:product_id", "GET"},
-		{"admin", "/process/:product_id/:user_id", "GET"},
+		{"seller", "/process/products/:product_id", "GET"},
+		{"admin", "/process/products/:product_id", "GET"},
+		{"admin", "/process/user/:product_id/:user_id", "GET"},
 		{"consumer", "/process", "GET"},
 		{"consumer", "/process/:id", "GET"},
 		{"seller", "/process/:id", "GET"},
