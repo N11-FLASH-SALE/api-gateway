@@ -98,7 +98,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/cards/amount/{card_id}": {
+        "/cards/amount/{card_number}": {
             "get": {
                 "security": [
                     {
@@ -113,8 +113,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "card_id",
-                        "name": "card_id",
+                        "description": "card_number",
+                        "name": "card_number",
                         "in": "path",
                         "required": true
                     }
@@ -127,6 +127,50 @@ const docTemplate = `{
                         }
                     },
                     "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/process/buy": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "it will Create Process",
+                "tags": [
+                    "PROCESS"
+                ],
+                "parameters": [
+                    {
+                        "description": "info",
+                        "name": "info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateProcessReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.GetCardsOfUserRes"
+                        }
+                    },
+                    "401": {
                         "description": "Invalid data",
                         "schema": {
                             "type": "string"
@@ -547,6 +591,25 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "expiration_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateProcessReq": {
+            "type": "object",
+            "required": [
+                "amount",
+                "card_number",
+                "product_id"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "card_number": {
+                    "type": "string"
+                },
+                "product_id": {
                     "type": "string"
                 }
             }

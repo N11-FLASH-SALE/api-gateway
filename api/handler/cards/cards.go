@@ -77,21 +77,21 @@ func (h *newCards) GetUserCards(c *gin.Context) {
 // @Summary Get Amount Of User Card
 // @Description it will Get Amount Of User Card
 // @Tags CARDS
-// @Param card_id path string true "card_id"
+// @Param card_number path string true "card_number"
 // @Success 200 {object} user.GetCardsOfUserRes
 // @Failure 400 {object} string "Invalid data"
 // @Failure 500 {object} string "Server error"
-// @Router /cards/amount/{card_id} [get]
+// @Router /cards/amount/{card_number} [get]
 func (h *newCards) GetAmountOfUserCard(c *gin.Context) {
 	h.Log.Info("GetAmountOfUserCard called")
 
-	id := c.Param("card_id")
-	if len(id) == 0 {
-		h.Log.Error("Invalid card id")
-		c.JSON(400, gin.H{"error": "Invalid card id"})
+	num := c.Param("card_number")
+	if len(num) == 0 {
+		h.Log.Error("Invalid card number")
+		c.JSON(400, gin.H{"error": "Invalid card number"})
 		return
 	}
-	res, err := h.Cards.GetCardAmount(c, &pb.GetCardAmountReq{CardId: id})
+	res, err := h.Cards.GetCardAmount(c, &pb.GetCardAmountReq{CardNumber: num})
 	if err != nil {
 		h.Log.Error("Error getting card amount", "error", err)
 		c.JSON(500, gin.H{"error": err.Error()})

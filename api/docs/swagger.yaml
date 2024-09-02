@@ -12,6 +12,19 @@ definitions:
     - ccv
     - expiration_date
     type: object
+  models.CreateProcessReq:
+    properties:
+      amount:
+        type: integer
+      card_number:
+        type: string
+      product_id:
+        type: string
+    required:
+    - amount
+    - card_number
+    - product_id
+    type: object
   models.CreateProductRequest:
     properties:
       color:
@@ -252,13 +265,13 @@ paths:
       summary: Create Cards
       tags:
       - CARDS
-  /cards/amount/{card_id}:
+  /cards/amount/{card_number}:
     get:
       description: it will Get Amount Of User Card
       parameters:
-      - description: card_id
+      - description: card_number
         in: path
-        name: card_id
+        name: card_number
         required: true
         type: string
       responses:
@@ -279,6 +292,33 @@ paths:
       summary: Get Amount Of User Card
       tags:
       - CARDS
+  /process/buy:
+    post:
+      description: it will Create Process
+      parameters:
+      - description: info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProcessReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GetCardsOfUserRes'
+        "401":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - PROCESS
   /products:
     get:
       description: it will Get Seller Products
