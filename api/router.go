@@ -56,9 +56,9 @@ func Router(h handler.HandlerInterface) *gin.Engine {
 
 	wish := router.Group("/wishlist")
 	{
-		wish.POST("")
-		wish.GET("")
-		wish.GET("/:id")
+		wish.POST("/:product_id", h.WishlistMethods().CreateWishlist)
+		wish.GET("", h.WishlistMethods().GetWishlist)
+		wish.GET("/:id", h.WishlistMethods().GetWishlistById)
 	}
 
 	fdbk := router.Group("/feedback")

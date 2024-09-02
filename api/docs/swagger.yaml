@@ -103,6 +103,52 @@ definitions:
       stock:
         type: integer
     type: object
+  models.WishList:
+    properties:
+      color:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: string
+      limit_of_product:
+        type: integer
+      photo_url:
+        items:
+          type: string
+        type: array
+      price:
+        type: number
+      price_without_stock:
+        type: number
+      product_id:
+        type: string
+      product_name:
+        type: string
+      seller_id:
+        type: string
+      size:
+        items:
+          type: string
+        type: array
+      start_date:
+        type: string
+      stock:
+        type: integer
+    type: object
+  models.WishListRes:
+    properties:
+      user_id:
+        type: string
+      wish_list:
+        items:
+          $ref: '#/definitions/models.WishList'
+        type: array
+    type: object
   sale.GetProcessByIdResponse:
     properties:
       amount:
@@ -245,6 +291,13 @@ definitions:
         type: string
       stock:
         type: integer
+    type: object
+  sale.WishlistResponse:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
     type: object
   user.Card:
     properties:
@@ -800,6 +853,82 @@ paths:
       summary: UploadProductPhoto
       tags:
       - PRODUCTS
+  /wishlist:
+    get:
+      description: Get Wish list
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.WishListRes'
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - WISHLIST
+  /wishlist/{id}:
+    get:
+      description: Get Wish list By Id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.WishlistResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - WISHLIST
+  /wishlist/{product_id}:
+    post:
+      description: Create Wish list
+      parameters:
+      - description: product_id
+        in: path
+        name: product_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.WishlistResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - WISHLIST
 securityDefinitions:
   ApiKeyAuth:
     description: API Gateway

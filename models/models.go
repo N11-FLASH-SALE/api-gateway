@@ -54,3 +54,27 @@ type CreateProcessReq struct {
 type UpdateProcessReq struct {
 	Status string `json:"status" binding:"required"`
 }
+
+// wishlist
+
+type WishList struct {
+	ID                string   `json:"id"`
+	ProductID         string   `json:"product_id"`
+	ProductName       string   `json:"product_name"`
+	Description       string   `json:"description"`
+	Price             float64  `json:"price"`
+	Stock             int64    `json:"stock"`
+	PriceWithoutStock float64  `json:"price_without_stock"`
+	LimitOfProduct    int64    `json:"limit_of_product"`
+	Size              []string `json:"size"`
+	Color             []string `json:"color"`
+	StartDate         string   `json:"start_date"`
+	EndDate           string   `json:"end_date"`
+	SellerID          string   `json:"seller_id"`
+	PhotoURL          []string `json:"photo_url"`
+}
+
+type WishListRes struct {
+	UserID string      `json:"user_id"`
+	Wishes []*WishList `json:"wish_list"`
+}

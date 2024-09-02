@@ -87,7 +87,7 @@ func CasbinEnforcer(logger *slog.Logger) (*casbin.Enforcer, error) {
 		{"consumer", "/process/:id", "DELETE"},
 
 		// Wishlist
-		{"consumer", "/wishlist", "POST"},
+		{"consumer", "/wishlist/:product_id", "POST"},
 		{"consumer", "/wishlist", "GET"},
 		{"consumer", "/wishlist/:id", "GET"},
 
