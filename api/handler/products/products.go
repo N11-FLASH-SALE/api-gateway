@@ -386,6 +386,7 @@ func (h *newProducts) UploadProductPhoto(c *gin.Context) {
 	})
 	if err != nil {
 		c.AbortWithError(500, err)
+		fmt.Println(err.Error())
 		return
 	}
 
@@ -432,16 +433,17 @@ func (h *newProducts) UploadProductPhoto(c *gin.Context) {
 
 }
 
-// DeleteProductPhoto godoc
+// @Summary UploadProductPhoto
 // @Security ApiKeyAuth
-// @Description it will Delete Product Photo
+// @Description Upload Product Photo
 // @Tags PRODUCTS
+// @Accept multipart/form-data
 // @Param product_id path string true "product_id"
-// @Param photo_url path string true "photo_url"
-// @Success 200 {object} string "message"
-// @Failure 400 {object} string "Invalid data"
-// @Failure 500 {object} string "Server error"
-// @Router /products/{product_id}/{photo_url} [delete]
+// @Param url query string false "url"
+// @Success 200 {object} string
+// @Failure 400 {object} string
+// @Failure 500 {object} string
+// @Router /products/photo/{product_id} [delete]
 func (h *newProducts) DeleteProductPhoto(c *gin.Context) {
 	h.Log.Info("DeleteProductPhoto called")
 	Id := c.Param("product_id")
@@ -450,16 +452,12 @@ func (h *newProducts) DeleteProductPhoto(c *gin.Context) {
 		h.Log.Error("Product ID is required")
 		return
 	}
-	photoId := c.Param("photo_url")
-	if len(photoId) == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Photo URL is required"})
-		h.Log.Error("Photo URL is required")
-		return
-	}
+	var ph models.DeletePhoto
+	ph.PhotoUrl = c.Query("url")
 
 	prefix := fmt.Sprintf("http://%s/products/", config.Load().MINIO_URL)
 	bucketName := "products"
-	objectName := strings.TrimPrefix(photoId, prefix)
+	objectName := strings.TrimPrefix(ph.PhotoUrl, prefix)
 
 	minioClient, err := minio.New("localhost:9000", &minio.Options{
 		Creds:  credentials.NewStaticV4("test", "minioadmin", ""),
@@ -477,7 +475,7 @@ func (h *newProducts) DeleteProductPhoto(c *gin.Context) {
 	}
 	req := pb.DeletePhotosRequest{
 		ProductId: Id,
-		PhotoUrl:  photoId,
+		PhotoUrl:  ph.PhotoUrl,
 	}
 	_, err = h.Product.DeletePhotosFromProduct(c, &req)
 	if err != nil {

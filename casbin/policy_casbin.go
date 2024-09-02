@@ -71,7 +71,7 @@ func CasbinEnforcer(logger *slog.Logger) (*casbin.Enforcer, error) {
 		{"seller", "/products/:id", "PUT"},
 		{"seller", "/products/:id", "DELETE"},
 		{"seller", "/products/photo/:product_id", "POST"},
-		{"seller", "/products/photo/:product_id/:photo_url", "DELETE"},
+		{"seller", "/products/photo/:product_id", "DELETE"},
 
 		// process
 		{"consumer", "/process", "POST"},

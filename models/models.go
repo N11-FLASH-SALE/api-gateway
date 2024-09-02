@@ -16,8 +16,8 @@ type CreateProductRequest struct {
 	LimitOfProduct    int64    `json:"limit_of_product" binding:"required"`
 	Size              []string `json:"size"`
 	Color             []string `json:"color"`
-	StartDate         string   `json:"start_date" binding:"required,date"`
-	EndDate           string   `json:"end_date" binding:"required,date"`
+	StartDate         string   `json:"start_date" binding:"required"`
+	EndDate           string   `json:"end_date" binding:"required"`
 }
 
 type GetProductReq struct {
@@ -38,4 +38,8 @@ type UpdateProductRequest struct {
 	Color             []string `json:"color"`
 	StartDate         string   `json:"start_date"`
 	EndDate           string   `json:"end_date"`
+}
+
+type DeletePhoto struct {
+	PhotoUrl string `json:"photo_url"`
 }

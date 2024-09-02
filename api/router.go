@@ -39,8 +39,7 @@ func Router(h handler.HandlerInterface) *gin.Engine {
 		prd.PUT("/:id", h.ProductMethods().UpdateProduct)
 		prd.DELETE("/:id", h.ProductMethods().DeleteProduct)
 		prd.POST("/photo/:product_id", h.ProductMethods().UploadProductPhoto)
-		prd.DELETE("/photo/:product_id/:photo_url", h.ProductMethods().DeleteProductPhoto)
-
+		prd.DELETE("/photo/:product_id", h.ProductMethods().DeleteProductPhoto)
 	}
 
 	prcs := router.Group("/process")
