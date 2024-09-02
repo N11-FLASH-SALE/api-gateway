@@ -50,3 +50,7 @@ type CreateProcessReq struct {
 	Amount     int64  `json:"amount" binding:"required"`
 	CardNumber string `json:"card_number" binding:"required"`
 }
+
+type UpdateProcessReq struct {
+	Status string `json:"status" binding:"required"`
+}

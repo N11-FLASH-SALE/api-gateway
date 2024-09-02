@@ -71,6 +71,13 @@ definitions:
       stock:
         type: integer
     type: object
+  models.UpdateProcessReq:
+    properties:
+      status:
+        type: string
+    required:
+    - status
+    type: object
   models.UpdateProductRequest:
     properties:
       color:
@@ -95,6 +102,40 @@ definitions:
         type: string
       stock:
         type: integer
+    type: object
+  sale.GetProcessByIdResponse:
+    properties:
+      amount:
+        type: integer
+      id:
+        type: string
+      product_id:
+        type: string
+      status:
+        type: string
+      user_id:
+        type: string
+    type: object
+  sale.GetProcessByProductIdResponse:
+    properties:
+      processes:
+        items:
+          $ref: '#/definitions/sale.Processes'
+        type: array
+    type: object
+  sale.GetProcessByUserIdResponse:
+    properties:
+      processes:
+        items:
+          $ref: '#/definitions/sale.Processes'
+        type: array
+    type: object
+  sale.GetProcessOfUserByProductIdResponse:
+    properties:
+      processes:
+        items:
+          $ref: '#/definitions/sale.Processes'
+        type: array
     type: object
   sale.GetProductByIdResponse:
     properties:
@@ -146,6 +187,24 @@ definitions:
         items:
           $ref: '#/definitions/sale.Products'
         type: array
+    type: object
+  sale.ProcessResponse:
+    properties:
+      id:
+        type: string
+    type: object
+  sale.Processes:
+    properties:
+      amount:
+        type: integer
+      id:
+        type: string
+      product_id:
+        type: string
+      status:
+        type: string
+      user_id:
+        type: string
     type: object
   sale.ProductId:
     properties:
@@ -292,6 +351,108 @@ paths:
       summary: Get Amount Of User Card
       tags:
       - CARDS
+  /process:
+    get:
+      description: Get Process By User Id
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProcessByUserIdResponse'
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - PROCESS
+  /process/{id}:
+    delete:
+      description: Cancel Process
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: success
+          schema:
+            type: string
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - PROCESS
+    get:
+      description: Get Process By Id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProcessByIdResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - PROCESS
+    put:
+      description: Update Process
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProcessReq'
+      responses:
+        "200":
+          description: success
+          schema:
+            type: string
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - PROCESS
   /process/buy:
     post:
       description: it will Create Process
@@ -306,9 +467,82 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user.GetCardsOfUserRes'
-        "401":
+            $ref: '#/definitions/sale.ProcessResponse'
+        "400":
           description: Invalid data
+          schema:
+            type: string
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "404":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - PROCESS
+  /process/products/{product_id}:
+    get:
+      description: Get Process By Product Id
+      parameters:
+      - description: product_id
+        in: path
+        name: product_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProcessByProductIdResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "404":
+          description: not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - PROCESS
+  /process/user/{product_id}/{user_id}:
+    get:
+      description: Get Process Of User By Product Id
+      parameters:
+      - description: product_id
+        in: path
+        name: product_id
+        required: true
+        type: string
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProcessOfUserByProductIdResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "404":
+          description: not found
           schema:
             type: string
         "500":

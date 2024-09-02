@@ -44,13 +44,13 @@ func Router(h handler.HandlerInterface) *gin.Engine {
 
 	prcs := router.Group("/process")
 	{
-		prcs.POST("/buy")
-		prcs.GET("/products/:product_id")
-		prcs.GET("/user/:product_id/:user_id")
-		prcs.GET("")
-		prcs.GET("/:id")
-		prcs.PUT("/:id")
-		prcs.DELETE("/:id")
+		prcs.POST("/buy", h.ProcessMethods().CreateProcess)
+		prcs.GET("/products/:product_id", h.ProcessMethods().GetProcessByProductId)
+		prcs.GET("/user/:product_id/:user_id", h.ProcessMethods().GetProcessOfUserByProductId)
+		prcs.GET("", h.ProcessMethods().GetProcessByUserId)
+		prcs.GET("/:id", h.ProcessMethods().GetProcessById)
+		prcs.PUT("/:id", h.ProcessMethods().UpdateProcess)
+		prcs.DELETE("/:id", h.ProcessMethods().CancelProcess)
 
 	}
 

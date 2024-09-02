@@ -4,6 +4,8 @@ import (
 	"api/genproto/sale"
 	"api/genproto/user"
 	"log/slog"
+
+	"github.com/gin-gonic/gin"
 )
 
 type newProcess struct {
@@ -42,4 +44,11 @@ func NewProcessMethods(
 }
 
 type NewProcess interface {
+	CreateProcess(*gin.Context)
+	GetProcessByProductId(*gin.Context)
+	GetProcessOfUserByProductId(*gin.Context)
+	GetProcessByUserId(*gin.Context)
+	GetProcessById(*gin.Context)
+	UpdateProcess(*gin.Context)
+	CancelProcess(*gin.Context)
 }
