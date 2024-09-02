@@ -32,13 +32,14 @@ func Router(h handler.HandlerInterface) *gin.Engine {
 
 	prd := router.Group("/products")
 	{
-		prd.POST("")
-		prd.POST("/list")
-		prd.GET("/:id")
-		prd.PUT("/:id")
-		prd.DELETE("/:id")
-		prd.POST("/photo/:product_id")
-		prd.DELETE("/photo/:product_id")
+		prd.POST("", h.ProductMethods().CreateProduct)
+		prd.POST("/list", h.ProductMethods().GetProductsList)
+		prd.GET("/:id", h.ProductMethods().GetProductByID)
+		prd.GET("", h.ProductMethods().GetSellerProducts)
+		prd.PUT("/:id", h.ProductMethods().UpdateProduct)
+		prd.DELETE("/:id", h.ProductMethods().DeleteProduct)
+		prd.POST("/photo/:product_id", h.ProductMethods().UploadProductPhoto)
+		prd.DELETE("/photo/:product_id/:photo_url", h.ProductMethods().DeleteProductPhoto)
 
 	}
 

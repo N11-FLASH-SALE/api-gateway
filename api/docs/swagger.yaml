@@ -12,6 +12,168 @@ definitions:
     - ccv
     - expiration_date
     type: object
+  models.CreateProductRequest:
+    properties:
+      color:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      end_date:
+        type: string
+      limit_of_product:
+        type: integer
+      name:
+        type: string
+      price_without_stock:
+        type: number
+      size:
+        items:
+          type: string
+        type: array
+      start_date:
+        type: string
+      stock:
+        type: integer
+    required:
+    - description
+    - end_date
+    - limit_of_product
+    - name
+    - price_without_stock
+    - start_date
+    - stock
+    type: object
+  models.GetProductReq:
+    properties:
+      max_price:
+        type: number
+      min_price:
+        type: number
+      name:
+        type: string
+      seller_id:
+        type: string
+      stock:
+        type: integer
+    type: object
+  models.UpdateProductRequest:
+    properties:
+      color:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      end_date:
+        type: string
+      limit_of_product:
+        type: integer
+      name:
+        type: string
+      price_without_stock:
+        type: number
+      size:
+        items:
+          type: string
+        type: array
+      start_date:
+        type: string
+      stock:
+        type: integer
+    type: object
+  sale.GetProductByIdResponse:
+    properties:
+      color:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: string
+      limit_of_product:
+        type: integer
+      name:
+        type: string
+      photos:
+        items:
+          type: string
+        type: array
+      price:
+        type: number
+      price_without_stock:
+        type: number
+      seller_id:
+        type: string
+      size:
+        items:
+          type: string
+        type: array
+      start_date:
+        type: string
+      stock:
+        type: integer
+    type: object
+  sale.GetProductResponse:
+    properties:
+      product:
+        items:
+          $ref: '#/definitions/sale.Products'
+        type: array
+      total_count:
+        type: integer
+    type: object
+  sale.GetProductsByUserIdResponse:
+    properties:
+      product:
+        items:
+          $ref: '#/definitions/sale.Products'
+        type: array
+    type: object
+  sale.ProductId:
+    properties:
+      id:
+        type: string
+    type: object
+  sale.Products:
+    properties:
+      color:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: string
+      limit_of_product:
+        type: integer
+      name:
+        type: string
+      photos:
+        items:
+          type: string
+        type: array
+      price:
+        type: number
+      price_without_stock:
+        type: number
+      seller_id:
+        type: string
+      size:
+        items:
+          type: string
+        type: array
+      start_date:
+        type: string
+      stock:
+        type: integer
+    type: object
   user.Card:
     properties:
       card_number:
@@ -117,6 +279,252 @@ paths:
       summary: Get Amount Of User Card
       tags:
       - CARDS
+  /products:
+    get:
+      description: it will Get Seller Products
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProductsByUserIdResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Seller Products
+      tags:
+      - PRODUCTS
+    post:
+      description: it will Create Product
+      parameters:
+      - description: info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProductRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.ProductId'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Product
+      tags:
+      - PRODUCTS
+  /products/{id}:
+    delete:
+      description: it will Delete Product
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: message
+          schema:
+            type: string
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Product
+      tags:
+      - PRODUCTS
+    get:
+      description: it will Get Product By ID
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProductByIdResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Product By ID
+      tags:
+      - PRODUCTS
+    put:
+      description: it will Update Product
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProductRequest'
+      responses:
+        "200":
+          description: message
+          schema:
+            type: string
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Product
+      tags:
+      - PRODUCTS
+  /products/{product_id}/{photo_url}:
+    delete:
+      description: it will Delete Product Photo
+      parameters:
+      - description: product_id
+        in: path
+        name: product_id
+        required: true
+        type: string
+      - description: photo_url
+        in: path
+        name: photo_url
+        required: true
+        type: string
+      responses:
+        "200":
+          description: message
+          schema:
+            type: string
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - PRODUCTS
+  /products/list:
+    post:
+      description: it will Get Products List
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/models.GetProductReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProductResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "404":
+          description: Invalid user
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Products List
+      tags:
+      - PRODUCTS
+  /products/photo/{product_id}:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload Product Photo
+      parameters:
+      - description: product_id
+        in: path
+        name: product_id
+        required: true
+        type: string
+      - description: UploadMediaForm
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: UploadProductPhoto
+      tags:
+      - PRODUCTS
 securityDefinitions:
   ApiKeyAuth:
     description: API Gateway

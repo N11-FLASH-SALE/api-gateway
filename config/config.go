@@ -15,6 +15,7 @@ type Config struct {
 
 	ACCES_KEY   string
 	REFRESH_KEY string
+	MINIO_URL   string
 }
 
 func Load() Config {
@@ -28,6 +29,7 @@ func Load() Config {
 	config.API_ROUTER = cast.ToString(Coalesce("API_ROUTER", ":8080"))
 	config.ACCES_KEY = cast.ToString(Coalesce("ACCES_KEY", "flashsalee"))
 	config.REFRESH_KEY = cast.ToString(Coalesce("REFRESH_KEY", "OzNur"))
+	config.MINIO_URL = cast.ToString(Coalesce("MINIO_URL", "localhost:9000"))
 
 	return config
 }

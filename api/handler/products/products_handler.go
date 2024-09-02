@@ -47,4 +47,9 @@ type NewProduct interface {
 	CreateProduct(*gin.Context)
 	GetProductsList(*gin.Context)
 	GetProductByID(*gin.Context)
+	GetSellerProducts(*gin.Context)
+	UpdateProduct(*gin.Context)
+	DeleteProduct(*gin.Context)
+	UploadProductPhoto(*gin.Context)
+	DeleteProductPhoto(*gin.Context)
 }
