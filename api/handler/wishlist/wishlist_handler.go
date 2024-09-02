@@ -4,6 +4,8 @@ import (
 	"api/genproto/sale"
 	"api/genproto/user"
 	"log/slog"
+
+	"github.com/gin-gonic/gin"
 )
 
 type newWishlists struct {
@@ -42,4 +44,7 @@ func NewWishlistsMethods(
 }
 
 type NewWishlist interface {
+	CreateWishlist(*gin.Context)
+	GetWishlist(*gin.Context)
+	GetWishlistById(*gin.Context)
 }

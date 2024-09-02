@@ -5,6 +5,7 @@ import (
 	pb "api/genproto/sale"
 	"api/genproto/user"
 	"api/models"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -92,6 +93,13 @@ func (h *newProcess) CreateProcess(c *gin.Context) {
 
 	if err != nil {
 		h.Log.Error("Error creating process", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: userId, Message: "hello, you purchased product good luck!"})
+	if err != nil {
+		h.Log.Error("Error creating notification", "error", err)
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
@@ -271,9 +279,23 @@ func (h *newProcess) UpdateProcess(c *gin.Context) {
 		return
 	}
 
-	_, err := h.Process.UpdateProcess(c, &pb.UpdateProcessRequest{Id: id, Status: req.Status})
+	resfirst, err := h.Process.GetProcessById(c, &pb.GetProcessByIdRequest{Id: id})
+	if resfirst.Status == "Canceled" {
+		h.Log.Error("Process is already canceled", "error", err)
+		c.JSON(404, gin.H{"error": "Process is already canceled"})
+		return
+	}
+
+	_, err = h.Process.UpdateProcess(c, &pb.UpdateProcessRequest{Id: id, Status: req.Status})
 	if err != nil {
 		h.Log.Error("Error updating process", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: resfirst.UserId, Message: fmt.Sprintf("your product is %s", req.Status)})
+	if err != nil {
+		h.Log.Error("Error creating notification", "error", err)
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
@@ -299,6 +321,18 @@ func (h *newProcess) CancelProcess(c *gin.Context) {
 		return
 	}
 
+	resfirst, err := h.Process.GetProcessById(c, &pb.GetProcessByIdRequest{Id: id})
+	if resfirst.Status != "Pending" {
+		h.Log.Error("you can not cancel process", "error", err)
+		c.JSON(404, gin.H{"error": "you can not cancel process"})
+		_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: resfirst.UserId, Message: "you can not not cancel process because it is already above pending"})
+		if err != nil {
+			h.Log.Error("Error creating notification", "error", err)
+			return
+		}
+		return
+	}
+
 	res, err := h.Process.CancelProcess(c, &pb.CancelProcessRequest{Id: id})
 	if err != nil {
 		h.Log.Error("Error canceling process", "error", err)
@@ -321,6 +355,13 @@ func (h *newProcess) CancelProcess(c *gin.Context) {
 	_, err = h.Cards.UpdateCardAmount(c, &user.UpdateCardAmountReq{CardNumber: res1.CardNumber, Amount: res2.Price * float64(res.Amount)})
 	if err != nil {
 		h.Log.Error("Error updating card", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: resfirst.UserId, Message: "your purchase has canceled successfully"})
+	if err != nil {
+		h.Log.Error("Error creating notification", "error", err)
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
