@@ -44,7 +44,7 @@ func Router(h handler.HandlerInterface) *gin.Engine {
 
 	prcs := router.Group("/process")
 	{
-		prcs.POST("")
+		prcs.POST("/buy")
 		prcs.GET("/products/:product_id")
 		prcs.GET("/user/:product_id/:user_id")
 		prcs.GET("")

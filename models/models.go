@@ -43,3 +43,10 @@ type UpdateProductRequest struct {
 type DeletePhoto struct {
 	PhotoUrl string `json:"photo_url"`
 }
+
+// process
+type CreateProcessReq struct {
+	ProductID  string `json:"product_id" binding:"required"`
+	Amount     int64  `json:"amount" binding:"required"`
+	CardNumber string `json:"card_number" binding:"required"`
+}
