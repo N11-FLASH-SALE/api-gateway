@@ -4,6 +4,8 @@ import (
 	"api/genproto/sale"
 	"api/genproto/user"
 	"log/slog"
+
+	"github.com/gin-gonic/gin"
 )
 
 type newProducts struct {
@@ -42,4 +44,7 @@ func NewProductsMethods(
 }
 
 type NewProduct interface {
+	CreateProduct(*gin.Context)
+	GetProductsList(*gin.Context)
+	GetProductByID(*gin.Context)
 }

@@ -101,6 +101,12 @@ func CasbinEnforcer(logger *slog.Logger) (*casbin.Enforcer, error) {
 		{"seller", "/bought/:product_id", "GET"},
 		{"admin", "/bought/:product_id", "GET"},
 		{"consumer", "/bought", "GET"},
+
+		// Notifications
+		{"consumer", "/notifications/all", "GET"},
+		{"seller", "/notifications/all", "GET"},
+		{"consumer", "/notifications/unreaden", "GET"},
+		{"seller", "/notifications/unreaden", "GET"},
 	}
 
 	_, err = enforcer.AddPolicies(policies)

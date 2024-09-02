@@ -75,5 +75,11 @@ func Router(h handler.HandlerInterface) *gin.Engine {
 		bght.GET("")
 	}
 
+	ntfc := router.Group("/notifications")
+	{
+		ntfc.GET("/all")
+		ntfc.GET("/unreaden")
+	}
+
 	return router
 }
