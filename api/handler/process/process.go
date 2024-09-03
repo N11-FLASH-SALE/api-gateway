@@ -109,6 +109,12 @@ func (h *newProcess) CreateProcess(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: product.SellerId, Message: "hello, someone purchased your product good luck!"})
+	if err != nil {
+		h.Log.Error("Error creating notification", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
 	h.Log.Info("Process created successfully")
 	c.JSON(200, res1)
 }
@@ -366,6 +372,13 @@ func (h *newProcess) CancelProcess(c *gin.Context) {
 	}
 
 	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: resfirst.UserId, Message: "your purchase has canceled successfully"})
+	if err != nil {
+		h.Log.Error("Error creating notification", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: res2.SellerId, Message: "someone cancelled your products"})
 	if err != nil {
 		h.Log.Error("Error creating notification", "error", err)
 		c.JSON(500, gin.H{"error": err.Error()})
