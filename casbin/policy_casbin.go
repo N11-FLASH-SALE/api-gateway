@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	host     = "localhost"
+	host     = "postgres2"
 	port     = "5432"
 	dbname   = "casbin"
 	username = "postgres"

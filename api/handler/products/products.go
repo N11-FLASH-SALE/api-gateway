@@ -274,7 +274,7 @@ func (h *newProducts) UpdateProduct(c *gin.Context) {
 	}
 
 	// kafka
-	writerKafka, err := producer.NewKafkaProducerInit([]string{"localhost:9092"})
+	writerKafka, err := producer.NewKafkaProducerInit([]string{"kafka:9092"})
 	if err != nil {
 		h.Log.Error(err.Error())
 		c.JSON(500, err.Error())
@@ -316,7 +316,7 @@ func (h *newProducts) DeleteProduct(c *gin.Context) {
 		h.Log.Error("Product ID is required")
 		return
 	}
-	writerKafka, err := producer.NewKafkaProducerInit([]string{"localhost:9092"})
+	writerKafka, err := producer.NewKafkaProducerInit([]string{"kafka:9092"})
 	if err != nil {
 		h.Log.Error(err.Error())
 		c.JSON(500, err.Error())
