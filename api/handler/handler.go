@@ -4,6 +4,7 @@ import (
 	"api/api/handler/bought"
 	"api/api/handler/cards"
 	"api/api/handler/feedback"
+	"api/api/handler/notification"
 	"api/api/handler/process"
 	"api/api/handler/products"
 	"api/api/handler/wishlist"
@@ -22,6 +23,7 @@ type HandlerInterface interface {
 	FeedbackMethods() feedback.NewFeedback
 	ProcessMethods() process.NewProcess
 	WishlistMethods() wishlist.NewWishlist
+	NotificationMethods() notification.NewNotification
 	EnforcerMethods() middleware.CasbinPermission
 }
 
@@ -117,6 +119,13 @@ func (h *Handler) WishlistMethods() wishlist.NewWishlist {
 		h.Wishlist,
 		h.Feedback,
 		h.Bought,
+		h.Notification,
+		h.Log,
+	)
+}
+
+func (h *Handler) NotificationMethods() notification.NewNotification {
+	return notification.NewNotificationsMethods(
 		h.Notification,
 		h.Log,
 	)
