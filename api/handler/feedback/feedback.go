@@ -45,6 +45,14 @@ func (h *newFeedbacks) CreateFeedback(c *gin.Context) {
 		c.JSON(404, gin.H{"error": "Product not found"})
 		return
 	}
+
+	product, err := h.Product.GetProductById(c, &pb.ProductId{Id: prid})
+	if err != nil {
+		h.Log.Error("Error getting product", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
 	var req models.CreateFeedback
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.Log.Error("Invalid request", "error", err)
@@ -63,6 +71,12 @@ func (h *newFeedbacks) CreateFeedback(c *gin.Context) {
 		return
 	}
 	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: userId, Message: fmt.Sprintf("you created a feedback for product id: %s", prid)})
+	if err != nil {
+		h.Log.Error("Error creating notification", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: product.SellerId, Message: fmt.Sprintf("someone write feedback to your product: %s", prid)})
 	if err != nil {
 		h.Log.Error("Error creating notification", "error", err)
 		c.JSON(500, gin.H{"error": err.Error()})
