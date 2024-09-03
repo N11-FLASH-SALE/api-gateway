@@ -459,7 +459,7 @@ func (h *newProducts) DeleteProductPhoto(c *gin.Context) {
 	bucketName := "products"
 	objectName := strings.TrimPrefix(ph.PhotoUrl, prefix)
 
-	minioClient, err := minio.New("localhost:9000", &minio.Options{
+	minioClient, err := minio.New(config.Load().MINIO_URL, &minio.Options{
 		Creds:  credentials.NewStaticV4("test", "minioadmin", ""),
 		Secure: false, // Set to true if using HTTPS
 	})
