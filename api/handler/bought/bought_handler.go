@@ -4,6 +4,8 @@ import (
 	"api/genproto/sale"
 	"api/genproto/user"
 	"log/slog"
+
+	"github.com/gin-gonic/gin"
 )
 
 type newBoughts struct {
@@ -42,4 +44,6 @@ func NewBoughtsMethods(
 }
 
 type NewBought interface {
+	GetBought(*gin.Context)
+	GetBoughtOfUser(*gin.Context)
 }

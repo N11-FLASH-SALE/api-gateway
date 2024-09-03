@@ -70,8 +70,8 @@ func Router(h handler.HandlerInterface) *gin.Engine {
 
 	bght := router.Group("/bought")
 	{
-		bght.GET("/:product_id")
-		bght.GET("")
+		bght.GET("/:product_id", h.BoughtMethods().GetBought)
+		bght.GET("", h.BoughtMethods().GetBoughtOfUser)
 	}
 
 	ntfc := router.Group("/notifications")

@@ -335,6 +335,54 @@ definitions:
 info:
   contact: {}
 paths:
+  /bought:
+    get:
+      description: it will Get Bought Of User
+      responses:
+        "200":
+          description: message
+          schema:
+            type: string
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Bought Of User
+      tags:
+      - BOUGHT
+  /bought/{product_id}:
+    get:
+      description: it will Get Bought
+      parameters:
+      - description: product_id
+        in: path
+        name: product_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: message
+          schema:
+            type: string
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Bought
+      tags:
+      - BOUGHT
   /cards:
     get:
       description: it will Get User Cards
