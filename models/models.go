@@ -78,3 +78,9 @@ type WishListRes struct {
 	UserID string      `json:"user_id"`
 	Wishes []*WishList `json:"wish_list"`
 }
+
+// feedback
+type CreateFeedback struct {
+	Rating      int64  `json:"rating" binding:"required"`
+	Description string `json:"description" binding:"required"`
+}

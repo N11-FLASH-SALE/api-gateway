@@ -12,6 +12,16 @@ definitions:
     - ccv
     - expiration_date
     type: object
+  models.CreateFeedback:
+    properties:
+      description:
+        type: string
+      rating:
+        type: integer
+    required:
+    - description
+    - rating
+    type: object
   models.CreateProcessReq:
     properties:
       amount:
@@ -404,6 +414,98 @@ paths:
       summary: Get Amount Of User Card
       tags:
       - CARDS
+  /feedback:
+    get:
+      description: it will Get Feedback Of User
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProductByIdResponse'
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Feedback Of User
+      tags:
+      - FEEDBACK
+  /feedback/{product_id}:
+    get:
+      description: it will Get Feedback
+      parameters:
+      - description: product_id
+        in: path
+        name: product_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProductByIdResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "404":
+          description: not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Feedback
+      tags:
+      - FEEDBACK
+    post:
+      description: it will Create Feedback
+      parameters:
+      - description: product_id
+        in: path
+        name: product_id
+        required: true
+        type: string
+      - description: info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateFeedback'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sale.GetProductByIdResponse'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "404":
+          description: not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Feedback
+      tags:
+      - FEEDBACK
   /process:
     get:
       description: Get Process By User Id

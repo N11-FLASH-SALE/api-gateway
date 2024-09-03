@@ -4,6 +4,8 @@ import (
 	"api/genproto/sale"
 	"api/genproto/user"
 	"log/slog"
+
+	"github.com/gin-gonic/gin"
 )
 
 type newFeedbacks struct {
@@ -42,4 +44,7 @@ func NewFeedbacksMethods(
 }
 
 type NewFeedback interface {
+	CreateFeedback(*gin.Context)
+	GetFeedback(*gin.Context)
+	GetFeedbackOfUser(*gin.Context)
 }

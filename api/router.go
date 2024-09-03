@@ -63,10 +63,9 @@ func Router(h handler.HandlerInterface) *gin.Engine {
 
 	fdbk := router.Group("/feedback")
 	{
-		fdbk.POST("/:product_id")
-		fdbk.GET("")
-		fdbk.GET("/:product_id")
-
+		fdbk.POST("/:product_id", h.FeedbackMethods().CreateFeedback)
+		fdbk.GET("", h.FeedbackMethods().GetFeedbackOfUser)
+		fdbk.GET("/:product_id", h.FeedbackMethods().GetFeedback)
 	}
 
 	bght := router.Group("/bought")

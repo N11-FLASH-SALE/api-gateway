@@ -30,6 +30,12 @@ func (h *newProcess) CreateProcess(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+	_, err := h.Product.IsProductOk(c, &pb.ProductId{Id: req.ProductID})
+	if err != nil {
+		h.Log.Error("Product not found", "error", err)
+		c.JSON(404, gin.H{"error": "Product not found"})
+		return
+	}
 
 	token := c.GetHeader("Authorization")
 	userId, _, err := auth.GetUserInfoFromRefreshToken(token)
