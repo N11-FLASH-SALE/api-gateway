@@ -53,12 +53,6 @@ func (h *newNotifications) GetAndMarkNotificationAsRead(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Invalid token"})
 		return
 	}
-	notificationId := c.Param("notification_id")
-	if len(notificationId) == 0 {
-		h.Log.Error("Notification ID is required")
-		c.JSON(400, gin.H{"error": "Notification ID is required"})
-		return
-	}
 	res, err := h.Notification.GetAndMarkNotificationAsRead(c, &user.GetAndMarkNotificationAsReadReq{UserId: userId})
 	if err != nil {
 		h.Log.Error("Error getting and marking notification as read", "error", err)
