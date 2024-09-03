@@ -365,8 +365,14 @@ func (h *newProcess) CancelProcess(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	cardres, err := h.Cards.GetCardAmount(c, &user.GetCardAmountReq{CardNumber: res1.CardNumber})
+	if err != nil {
+		h.Log.Error("Error getting card amount", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
 
-	_, err = h.Cards.UpdateCardAmount(c, &user.UpdateCardAmountReq{CardNumber: res1.CardNumber, Amount: res2.Price * float64(res.Amount)})
+	_, err = h.Cards.UpdateCardAmount(c, &user.UpdateCardAmountReq{CardNumber: res1.CardNumber, Amount: res2.Price*float64(res.Amount) + cardres.Amount})
 	if err != nil {
 		h.Log.Error("Error updating card", "error", err)
 		c.JSON(500, gin.H{"error": err.Error()})
