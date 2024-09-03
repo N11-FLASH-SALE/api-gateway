@@ -78,18 +78,6 @@ func (h *newProcess) CreateProcess(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	_, err = h.Bought.CreateBought(c, &pb.CreateBoughtRequest{
-		UserId:        userId,
-		ProductId:     req.ProductID,
-		Amount:        req.Amount,
-		CardNumber:    req.CardNumber,
-		AmountOfMoney: product.Price * float64(req.Amount),
-	})
-	if err != nil {
-		h.Log.Error("Error creating bought", "error", err)
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
 
 	res1, err := h.Process.CreateProcess(c, &pb.CreateProcessRequest{
 		UserId:    userId,
@@ -100,6 +88,20 @@ func (h *newProcess) CreateProcess(c *gin.Context) {
 	if err != nil {
 		h.Log.Error("Error creating process", "error", err)
 		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	_, err = h.Bought.CreateBought(c, &pb.CreateBoughtRequest{
+		UserId:        userId,
+		ProductId:     req.ProductID,
+		Amount:        req.Amount,
+		CardNumber:    req.CardNumber,
+		AmountOfMoney: product.Price * float64(req.Amount),
+		ProcessID:     res1.Id,
+	})
+	if err != nil {
+		h.Log.Error("Error creating bought", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		h.Process.CancelProcess(c, &pb.CancelProcessRequest{Id: res1.Id})
 		return
 	}
 
