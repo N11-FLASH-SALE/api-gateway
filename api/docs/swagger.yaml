@@ -554,6 +554,48 @@ paths:
       summary: Create Feedback
       tags:
       - FEEDBACK
+  /notifications/all:
+    get:
+      description: it will Get All Notifications
+      responses:
+        "200":
+          description: message
+          schema:
+            type: string
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Notifications
+      tags:
+      - NOTIFICATION
+  /notifications/unreaden:
+    get:
+      description: it will Get And Mark Notification As Read
+      responses:
+        "200":
+          description: message
+          schema:
+            type: string
+        "401":
+          description: Invalid token
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get And Mark Notification As Read
+      tags:
+      - NOTIFICATION
   /process:
     get:
       description: Get Process By User Id
