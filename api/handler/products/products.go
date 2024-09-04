@@ -253,7 +253,6 @@ func (h *newProducts) UpdateProduct(c *gin.Context) {
 		Description:       req.Description,
 		Stock:             req.Stock,
 		PriceWithoutStock: req.PriceWithoutStock,
-		LimitOfProduct:    req.LimitOfProduct,
 		Size:              req.Size,
 		Color:             req.Color,
 		StartDate:         req.StartDate,
@@ -484,4 +483,38 @@ func (h *newProducts) DeleteProductPhoto(c *gin.Context) {
 	}
 	h.Log.Info("DeleteMediaProduct finished successfully")
 	c.JSON(200, gin.H{"message": "Photo deleted successfully"})
+}
+
+// @Summary UpdateLimitOfProduct
+// @Security ApiKeyAuth
+// @Description Update Limit Of Product
+// @Tags PRODUCTS
+// @Param product_id path string true "product_id"
+// @Success 200 {object} string
+// @Failure 400 {object} string
+// @Failure 500 {object} string
+// @Router /products/limit/{product_id} [put]
+func (h *newProducts) UpdateLimitOfProduct(c *gin.Context) {
+	h.Log.Info("UpdateLimitOfProduct called")
+	id := c.Param("product_id")
+	if len(id) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Product ID is required"})
+		h.Log.Error("Product ID is required")
+		return
+	}
+	var req models.LimitOfProductRequest
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		h.Log.Error(err.Error())
+		return
+	}
+	_, err = h.Product.UpdateLimitOfProduct(c, &pb.UpdateLimitOfProductRequest{Id: id, LimitOfProduct: req.LimitOfProductRequestType})
+	if err != nil {
+		h.Log.Error(err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating product limit"})
+		return
+	}
+	h.Log.Info("UpdateLimitOfProduct finished successfully")
+	c.JSON(200, gin.H{"message": "Product limit updated successfully"})
 }

@@ -5,8 +5,6 @@ import (
 	pb "api/genproto/sale"
 	"api/genproto/user"
 	"api/models"
-	"api/queue/kafka/producer"
-	"encoding/json"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -113,32 +111,12 @@ func (h *newProcess) CreateProcess(c *gin.Context) {
 		return
 	}
 
-	reqMain := pb.UpdateProductRequest{
-		Id:             req.ProductID,
-		LimitOfProduct: product.LimitOfProduct - req.Amount,
-	}
-
-	// kafka
-	writerKafka, err := producer.NewKafkaProducerInit([]string{"kafka:9092"})
+	_, err = h.Product.UpdateLimitOfProduct(c, &pb.UpdateLimitOfProductRequest{Id: res1.Id, LimitOfProduct: product.LimitOfProduct - req.Amount})
 	if err != nil {
-		h.Log.Error(err.Error())
-		c.JSON(500, err.Error())
+		h.Log.Error("Error updating product limit", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	defer writerKafka.Close()
-	msgBytes, err := json.Marshal(&reqMain)
-	if err != nil {
-		h.Log.Error(err.Error())
-		c.JSON(500, err.Error())
-		return
-	}
-	err = writerKafka.Producermessage("update_product", msgBytes)
-	if err != nil {
-		h.Log.Error(err.Error())
-		c.JSON(500, err.Error())
-		return
-	}
-	// kafka ended
 
 	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: userId, Message: "hello, you purchased product good luck!"})
 	if err != nil {

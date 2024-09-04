@@ -33,7 +33,6 @@ type UpdateProductRequest struct {
 	Description       string   `json:"description"`
 	Stock             int64    `json:"stock"`
 	PriceWithoutStock float64  `json:"price_without_stock"`
-	LimitOfProduct    int64    `json:"limit_of_product"`
 	Size              []string `json:"size"`
 	Color             []string `json:"color"`
 	StartDate         string   `json:"start_date"`
@@ -42,6 +41,10 @@ type UpdateProductRequest struct {
 
 type DeletePhoto struct {
 	PhotoUrl string `json:"photo_url"`
+}
+
+type LimitOfProductRequest struct {
+	LimitOfProductRequestType int64 `json:"limit_of_product" binding:"required"`
 }
 
 // process

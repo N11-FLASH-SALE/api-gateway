@@ -52,4 +52,5 @@ type NewProduct interface {
 	DeleteProduct(*gin.Context)
 	UploadProductPhoto(*gin.Context)
 	DeleteProductPhoto(*gin.Context)
+	UpdateLimitOfProduct(*gin.Context)
 }
