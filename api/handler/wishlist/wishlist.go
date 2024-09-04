@@ -34,6 +34,13 @@ func (h *newWishlists) CreateWishlist(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Invalid token"})
 		return
 	}
+
+	_, err = h.Product.IsProductOk(c, &pb.ProductId{Id: id})
+	if err != nil {
+		h.Log.Error("Product not found", "error", err)
+		c.JSON(404, gin.H{"error": "Product not found"})
+		return
+	}
 	res, err := h.Wishlist.CreateWishlist(c, &pb.CreateWishlistRequest{UserId: userId, ProductId: id})
 	if err != nil {
 		h.Log.Error("Error creating wishlist", "error", err)
