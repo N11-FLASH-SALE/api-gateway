@@ -110,6 +110,13 @@ func (h *newProcess) CreateProcess(c *gin.Context) {
 		h.Process.CancelProcess(c, &pb.CancelProcessRequest{Id: res1.Id})
 		return
 	}
+	_, err = h.Product.UpdateProduct(c, &pb.UpdateProductRequest{Id: req.ProductID, LimitOfProduct: product.LimitOfProduct - req.Amount})
+	if err != nil {
+		h.Log.Error("Error updating product", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		h.Process.CancelProcess(c, &pb.CancelProcessRequest{Id: res1.Id})
+		return
+	}
 
 	_, err = h.Notification.CreateNotification(c, &user.CreateNotificationsReq{UserId: userId, Message: "hello, you purchased product good luck!"})
 	if err != nil {
