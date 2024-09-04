@@ -57,6 +57,12 @@ func (h *newProcess) CreateProcess(c *gin.Context) {
 		c.JSON(404, gin.H{"error": "Product not found"})
 		return
 	}
+
+	if product.LimitOfProduct < req.Amount {
+		h.Log.Error("Limit of product exceeded")
+		c.JSON(400, gin.H{"error": "Limit of product exceeded"})
+		return
+	}
 	cardInfo, err := h.Cards.GetCardAmount(c, &user.GetCardAmountReq{CardNumber: req.CardNumber})
 	if err != nil {
 		h.Log.Error("Error getting card amount", "error", err)
