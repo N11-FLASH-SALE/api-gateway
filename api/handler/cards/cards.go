@@ -100,3 +100,31 @@ func (h *newCards) GetAmountOfUserCard(c *gin.Context) {
 	h.Log.Info("Card amount retrieved successfully")
 	c.JSON(200, res)
 }
+
+// DeleteCard godoc
+// @Security ApiKeyAuth
+// @Description it will Delete Card
+// @Tags CARDS
+// @Param card_number path string true "card_number"
+// @Success 200 {object} string "message"
+// @Failure 400 {object} string "Invalid data"
+// @Failure 500 {object} string "Server error"
+// @Router /cards/{card_number} [delete]
+func (h *newCards) DeleteCard(c *gin.Context) {
+	h.Log.Info("DeleteCard called")
+
+	num := c.Param("card_number")
+	if len(num) == 0 {
+		h.Log.Error("Invalid card number")
+		c.JSON(400, gin.H{"error": "Invalid card number"})
+		return
+	}
+	_, err := h.Cards.DeleteCard(c, &pb.DeleteCardReq{CardNumber: num})
+	if err != nil {
+		h.Log.Error("Error deleting card", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	h.Log.Info("Card deleted successfully")
+	c.JSON(200, gin.H{"message": "Card deleted successfully"})
+}

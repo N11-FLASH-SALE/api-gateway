@@ -28,6 +28,7 @@ func Router(h handler.HandlerInterface) *gin.Engine {
 		card.POST("", h.CardsMethods().CreateCards)
 		card.GET("", h.CardsMethods().GetUserCards)
 		card.GET("/amount/:card_number", h.CardsMethods().GetAmountOfUserCard)
+		card.DELETE("/:card_number", h.CardsMethods().DeleteCard)
 	}
 
 	prd := router.Group("/products")

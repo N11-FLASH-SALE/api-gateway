@@ -47,4 +47,5 @@ type NewCard interface {
 	CreateCards(*gin.Context)
 	GetUserCards(*gin.Context)
 	GetAmountOfUserCard(*gin.Context)
+	DeleteCard(*gin.Context)
 }

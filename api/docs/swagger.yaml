@@ -313,6 +313,8 @@ definitions:
     properties:
       card_number:
         type: string
+      card_type:
+        type: string
       expiration_date:
         type: string
       id:
@@ -433,6 +435,32 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create Cards
+      tags:
+      - CARDS
+  /cards/{card_number}:
+    delete:
+      description: it will Delete Card
+      parameters:
+      - description: card_number
+        in: path
+        name: card_number
+        required: true
+        type: string
+      responses:
+        "200":
+          description: message
+          schema:
+            type: string
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
       tags:
       - CARDS
   /cards/amount/{card_number}:
@@ -983,7 +1011,7 @@ paths:
     delete:
       consumes:
       - multipart/form-data
-      description: Upload Product Photo
+      description: Delete Product Photo
       parameters:
       - description: product_id
         in: path
@@ -1009,7 +1037,7 @@ paths:
             type: string
       security:
       - ApiKeyAuth: []
-      summary: UploadProductPhoto
+      summary: DeleteProductPhoto
       tags:
       - PRODUCTS
     post:

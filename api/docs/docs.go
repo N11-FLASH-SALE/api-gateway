@@ -218,6 +218,48 @@ const docTemplate = `{
                 }
             }
         },
+        "/cards/{card_number}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "it will Delete Card",
+                "tags": [
+                    "CARDS"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "card_number",
+                        "name": "card_number",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "message",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/feedback": {
             "get": {
                 "security": [
@@ -964,14 +1006,14 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Upload Product Photo",
+                "description": "Delete Product Photo",
                 "consumes": [
                     "multipart/form-data"
                 ],
                 "tags": [
                     "PRODUCTS"
                 ],
-                "summary": "UploadProductPhoto",
+                "summary": "DeleteProductPhoto",
                 "parameters": [
                     {
                         "type": "string",
@@ -1742,6 +1784,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "card_number": {
+                    "type": "string"
+                },
+                "card_type": {
                     "type": "string"
                 },
                 "expiration_date": {
