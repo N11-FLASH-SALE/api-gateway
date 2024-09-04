@@ -1009,8 +1009,6 @@ paths:
       - PRODUCTS
   /products/photo/{product_id}:
     delete:
-      consumes:
-      - multipart/form-data
       description: Delete Product Photo
       parameters:
       - description: product_id

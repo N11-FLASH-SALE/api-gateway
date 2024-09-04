@@ -1007,9 +1007,6 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Delete Product Photo",
-                "consumes": [
-                    "multipart/form-data"
-                ],
                 "tags": [
                     "PRODUCTS"
                 ],

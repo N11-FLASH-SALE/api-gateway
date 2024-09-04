@@ -437,7 +437,6 @@ func (h *newProducts) UploadProductPhoto(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Description Delete Product Photo
 // @Tags PRODUCTS
-// @Accept multipart/form-data
 // @Param product_id path string true "product_id"
 // @Param url query string false "url"
 // @Success 200 {object} string
