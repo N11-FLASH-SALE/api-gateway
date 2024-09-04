@@ -294,9 +294,9 @@ func (h *newProcess) UpdateProcess(c *gin.Context) {
 	}
 
 	resfirst, err := h.Process.GetProcessById(c, &pb.GetProcessByIdRequest{Id: id})
-	if resfirst.Status == "Canceled" {
-		h.Log.Error("Process is already canceled", "error", err)
-		c.JSON(404, gin.H{"error": "Process is already canceled"})
+	if resfirst.Status == "Cancelled" {
+		h.Log.Error("Process is already Cancelled", "error", err)
+		c.JSON(404, gin.H{"error": "Process is already Cancelled"})
 		return
 	}
 
