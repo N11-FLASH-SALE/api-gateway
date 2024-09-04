@@ -98,8 +98,6 @@ definitions:
         type: string
       end_date:
         type: string
-      limit_of_product:
-        type: integer
       name:
         type: string
       price_without_stock:
@@ -965,6 +963,33 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Update Product
+      tags:
+      - PRODUCTS
+  /products/limit/{product_id}:
+    put:
+      description: Update Limit Of Product
+      parameters:
+      - description: product_id
+        in: path
+        name: product_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: UpdateLimitOfProduct
       tags:
       - PRODUCTS
   /products/list:

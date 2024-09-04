@@ -885,6 +885,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/products/limit/{product_id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update Limit Of Product",
+                "tags": [
+                    "PRODUCTS"
+                ],
+                "summary": "UpdateLimitOfProduct",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "product_id",
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/products/list": {
             "post": {
                 "security": [
@@ -1452,9 +1495,6 @@ const docTemplate = `{
                 },
                 "end_date": {
                     "type": "string"
-                },
-                "limit_of_product": {
-                    "type": "integer"
                 },
                 "name": {
                     "type": "string"
