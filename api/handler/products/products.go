@@ -490,6 +490,7 @@ func (h *newProducts) DeleteProductPhoto(c *gin.Context) {
 // @Description Update Limit Of Product
 // @Tags PRODUCTS
 // @Param product_id path string true "product_id"
+// @Param info body models.LimitOfProductRequest true "info"
 // @Success 200 {object} string
 // @Failure 400 {object} string
 // @Failure 500 {object} string
