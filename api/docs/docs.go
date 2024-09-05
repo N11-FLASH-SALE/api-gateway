@@ -904,6 +904,15 @@ const docTemplate = `{
                         "name": "product_id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "info",
+                        "name": "info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LimitOfProductRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -1466,6 +1475,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.LimitOfProductRequest": {
+            "type": "object",
+            "required": [
+                "limit_of_product"
+            ],
+            "properties": {
+                "limit_of_product": {
                     "type": "integer"
                 }
             }

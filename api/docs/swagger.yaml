@@ -81,6 +81,13 @@ definitions:
       stock:
         type: integer
     type: object
+  models.LimitOfProductRequest:
+    properties:
+      limit_of_product:
+        type: integer
+    required:
+    - limit_of_product
+    type: object
   models.UpdateProcessReq:
     properties:
       status:
@@ -974,6 +981,12 @@ paths:
         name: product_id
         required: true
         type: string
+      - description: info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/models.LimitOfProductRequest'
       responses:
         "200":
           description: OK
