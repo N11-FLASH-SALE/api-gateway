@@ -111,7 +111,7 @@ func (h *newProcess) CreateProcess(c *gin.Context) {
 		return
 	}
 
-	_, err = h.Product.UpdateLimitOfProduct(c, &pb.UpdateLimitOfProductRequest{Id: res1.Id, LimitOfProduct: product.LimitOfProduct - req.Amount})
+	_, err = h.Product.UpdateLimitOfProduct(c, &pb.UpdateLimitOfProductRequest{Id: req.ProductID, LimitOfProduct: product.LimitOfProduct - req.Amount})
 	if err != nil {
 		h.Log.Error("Error updating product limit", "error", err)
 		c.JSON(500, gin.H{"error": err.Error()})
