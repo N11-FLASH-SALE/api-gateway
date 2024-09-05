@@ -44,7 +44,7 @@ type DeletePhoto struct {
 }
 
 type LimitOfProductRequest struct {
-	LimitOfProductRequestType int64 `json:"limit_of_product" binding:"required"`
+	LimitOfProductRequestType int64 `json:"limit_of_product"`
 }
 
 // process
