@@ -85,8 +85,6 @@ definitions:
     properties:
       limit_of_product:
         type: integer
-    required:
-    - limit_of_product
     type: object
   models.UpdateProcessReq:
     properties:
@@ -162,6 +160,40 @@ definitions:
       wish_list:
         items:
           $ref: '#/definitions/models.WishList'
+        type: array
+    type: object
+  sale.FeedbackOfProduct:
+    properties:
+      description:
+        type: string
+      rating:
+        type: integer
+      user_id:
+        type: string
+    type: object
+  sale.FeedbackOfUser:
+    properties:
+      description:
+        type: string
+      product_id:
+        type: string
+      rating:
+        type: integer
+    type: object
+  sale.GetFeedbackOfUserResponse:
+    properties:
+      feedbacks:
+        items:
+          $ref: '#/definitions/sale.FeedbackOfUser'
+        type: array
+    type: object
+  sale.GetFeedbackResponse:
+    properties:
+      average_rating:
+        type: number
+      feedbacks:
+        items:
+          $ref: '#/definitions/sale.FeedbackOfProduct'
         type: array
     type: object
   sale.GetProcessByIdResponse:
@@ -502,7 +534,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/sale.GetProductByIdResponse'
+            $ref: '#/definitions/sale.GetFeedbackOfUserResponse'
         "401":
           description: Invalid token
           schema:
@@ -529,7 +561,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/sale.GetProductByIdResponse'
+            $ref: '#/definitions/sale.GetFeedbackResponse'
         "400":
           description: Invalid data
           schema:

@@ -92,7 +92,7 @@ func (h *newFeedbacks) CreateFeedback(c *gin.Context) {
 // @Description it will Get Feedback
 // @Tags FEEDBACK
 // @Param product_id path string true "product_id"
-// @Success 200 {object} sale.GetProductByIdResponse
+// @Success 200 {object} sale.GetFeedbackResponse
 // @Failure 400 {object} string "Invalid data"
 // @Failure 404 {object} string "not found"
 // @Failure 500 {object} string "Server error"
@@ -128,7 +128,7 @@ func (h *newFeedbacks) GetFeedback(c *gin.Context) {
 // @Summary Get Feedback Of User
 // @Description it will Get Feedback Of User
 // @Tags FEEDBACK
-// @Success 200 {object} sale.GetProductByIdResponse
+// @Success 200 {object} sale.GetFeedbackOfUserResponse
 // @Failure 401 {object} string "Invalid token"
 // @Failure 500 {object} string "Server error"
 // @Router /feedback [get]

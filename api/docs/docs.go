@@ -276,7 +276,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/sale.GetProductByIdResponse"
+                            "$ref": "#/definitions/sale.GetFeedbackOfUserResponse"
                         }
                     },
                     "401": {
@@ -319,7 +319,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/sale.GetProductByIdResponse"
+                            "$ref": "#/definitions/sale.GetFeedbackResponse"
                         }
                     },
                     "400": {
@@ -1481,9 +1481,6 @@ const docTemplate = `{
         },
         "models.LimitOfProductRequest": {
             "type": "object",
-            "required": [
-                "limit_of_product"
-            ],
             "properties": {
                 "limit_of_product": {
                     "type": "integer"
@@ -1602,6 +1599,59 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.WishList"
+                    }
+                }
+            }
+        },
+        "sale.FeedbackOfProduct": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "sale.FeedbackOfUser": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "integer"
+                }
+            }
+        },
+        "sale.GetFeedbackOfUserResponse": {
+            "type": "object",
+            "properties": {
+                "feedbacks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/sale.FeedbackOfUser"
+                    }
+                }
+            }
+        },
+        "sale.GetFeedbackResponse": {
+            "type": "object",
+            "properties": {
+                "average_rating": {
+                    "type": "number"
+                },
+                "feedbacks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/sale.FeedbackOfProduct"
                     }
                 }
             }
