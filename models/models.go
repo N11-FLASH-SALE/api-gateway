@@ -74,7 +74,7 @@ type WishList struct {
 	StartDate         string   `json:"start_date"`
 	EndDate           string   `json:"end_date"`
 	SellerID          string   `json:"seller_id"`
-	PhotoURL          []string `json:"photo_url"`
+	PhotoURL          []string `json:"photo"`
 }
 
 type WishListRes struct {

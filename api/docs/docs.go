@@ -1554,7 +1554,7 @@ const docTemplate = `{
                 "limit_of_product": {
                     "type": "integer"
                 },
-                "photo_url": {
+                "photo": {
                     "type": "array",
                     "items": {
                         "type": "string"
