@@ -130,7 +130,7 @@ definitions:
         type: string
       limit_of_product:
         type: integer
-      photo:
+      photos:
         items:
           type: string
         type: array
