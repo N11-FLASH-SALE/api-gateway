@@ -1249,7 +1249,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.WishListRes"
+                            "$ref": "#/definitions/sale.GetWishlistResponse"
                         }
                     },
                     "401": {
@@ -1291,7 +1291,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/sale.WishlistResponse"
+                            "$ref": "#/definitions/sale.GetWishlistByIdResponse"
                         }
                     },
                     "400": {
@@ -1533,76 +1533,6 @@ const docTemplate = `{
                 }
             }
         },
-        "models.WishList": {
-            "type": "object",
-            "properties": {
-                "color": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "description": {
-                    "type": "string"
-                },
-                "end_date": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "limit_of_product": {
-                    "type": "integer"
-                },
-                "photos": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "price": {
-                    "type": "number"
-                },
-                "price_without_stock": {
-                    "type": "number"
-                },
-                "product_id": {
-                    "type": "string"
-                },
-                "product_name": {
-                    "type": "string"
-                },
-                "seller_id": {
-                    "type": "string"
-                },
-                "size": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "start_date": {
-                    "type": "string"
-                },
-                "stock": {
-                    "type": "integer"
-                }
-            }
-        },
-        "models.WishListRes": {
-            "type": "object",
-            "properties": {
-                "user_id": {
-                    "type": "string"
-                },
-                "wish_list": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.WishList"
-                    }
-                }
-            }
-        },
         "sale.FeedbackOfProduct": {
             "type": "object",
             "properties": {
@@ -1783,6 +1713,25 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/sale.Products"
+                    }
+                }
+            }
+        },
+        "sale.GetWishlistByIdResponse": {
+            "type": "object",
+            "properties": {
+                "product_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "sale.GetWishlistResponse": {
+            "type": "object",
+            "properties": {
+                "wishes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/sale.WishlistResponse"
                     }
                 }
             }

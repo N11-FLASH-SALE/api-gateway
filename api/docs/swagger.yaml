@@ -116,52 +116,6 @@ definitions:
       stock:
         type: integer
     type: object
-  models.WishList:
-    properties:
-      color:
-        items:
-          type: string
-        type: array
-      description:
-        type: string
-      end_date:
-        type: string
-      id:
-        type: string
-      limit_of_product:
-        type: integer
-      photos:
-        items:
-          type: string
-        type: array
-      price:
-        type: number
-      price_without_stock:
-        type: number
-      product_id:
-        type: string
-      product_name:
-        type: string
-      seller_id:
-        type: string
-      size:
-        items:
-          type: string
-        type: array
-      start_date:
-        type: string
-      stock:
-        type: integer
-    type: object
-  models.WishListRes:
-    properties:
-      user_id:
-        type: string
-      wish_list:
-        items:
-          $ref: '#/definitions/models.WishList'
-        type: array
-    type: object
   sale.FeedbackOfProduct:
     properties:
       description:
@@ -279,6 +233,18 @@ definitions:
       product:
         items:
           $ref: '#/definitions/sale.Products'
+        type: array
+    type: object
+  sale.GetWishlistByIdResponse:
+    properties:
+      product_id:
+        type: string
+    type: object
+  sale.GetWishlistResponse:
+    properties:
+      wishes:
+        items:
+          $ref: '#/definitions/sale.WishlistResponse'
         type: array
     type: object
   sale.ProcessResponse:
@@ -1148,7 +1114,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.WishListRes'
+            $ref: '#/definitions/sale.GetWishlistResponse'
         "401":
           description: Invalid token
           schema:
@@ -1174,7 +1140,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/sale.WishlistResponse'
+            $ref: '#/definitions/sale.GetWishlistByIdResponse'
         "400":
           description: Invalid data
           schema:
