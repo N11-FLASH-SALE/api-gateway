@@ -61,9 +61,8 @@ type UpdateProcessReq struct {
 // wishlist
 
 type WishList struct {
-	ID                string   `json:"id"`
-	ProductID         string   `json:"product_id"`
-	ProductName       string   `json:"product_name"`
+	ProductID         string   `json:"id"`
+	ProductName       string   `json:"name"`
 	Description       string   `json:"description"`
 	Price             float64  `json:"price"`
 	Stock             int64    `json:"stock"`

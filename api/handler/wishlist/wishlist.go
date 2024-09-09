@@ -4,6 +4,7 @@ import (
 	"api/api/auth"
 	pb "api/genproto/sale"
 	"api/genproto/user"
+	"api/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -60,7 +61,7 @@ func (h *newWishlists) CreateWishlist(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Description Get Wish list
 // @Tags WISHLIST
-// @Success 200 {object} sale.GetWishlistResponse
+// @Success 200 {object} models.WishListRes
 // @Failure 401 {object} string "Invalid token"
 // @Failure 500 {object} string "Server error"
 // @Router /wishlist [get]
@@ -81,8 +82,34 @@ func (h *newWishlists) GetWishlist(c *gin.Context) {
 		return
 	}
 
+	req := models.WishListRes{
+		UserID: userId,
+	}
+	for _, v := range res.Wishes {
+		product, err := h.Product.GetProductById(c, &pb.ProductId{Id: v.ProductId})
+		if err != nil {
+			h.Log.Error("Error getting product", "error", err)
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		req.Wishes = append(req.Wishes, &models.WishList{
+			ProductID:         product.Id,
+			ProductName:       product.Name,
+			Description:       product.Description,
+			Price:             product.Price,
+			Stock:             product.Stock,
+			PriceWithoutStock: product.PriceWithoutStock,
+			LimitOfProduct:    product.LimitOfProduct,
+			Size:              product.Size,
+			Color:             product.Color,
+			StartDate:         product.StartDate,
+			EndDate:           product.EndDate,
+			SellerID:          product.SellerId,
+			PhotoURL:          product.Photos,
+		})
+	}
 	h.Log.Info("Wishlist retrieved successfully")
-	c.JSON(200, res)
+	c.JSON(200, req)
 }
 
 // GetWishlistById godoc
@@ -90,7 +117,7 @@ func (h *newWishlists) GetWishlist(c *gin.Context) {
 // @Description Get Wish list By Id
 // @Tags WISHLIST
 // @Param id path string true "id"
-// @Success 200 {object} sale.GetWishlistByIdResponse
+// @Success 200 {object} models.WishList
 // @Failure 400 {object} string "Invalid data"
 // @Failure 500 {object} string "Server error"
 // @Router /wishlist/{id} [get]
@@ -109,6 +136,28 @@ func (h *newWishlists) GetWishlistById(c *gin.Context) {
 		return
 	}
 
+	product, err := h.Product.GetProductById(c, &pb.ProductId{Id: req.ProductId})
+	if err != nil {
+		h.Log.Error("Error getting product", "error", err)
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	res := models.WishList{
+		ProductID:         product.Id,
+		ProductName:       product.Name,
+		Description:       product.Description,
+		Price:             product.Price,
+		Stock:             product.Stock,
+		PriceWithoutStock: product.PriceWithoutStock,
+		LimitOfProduct:    product.LimitOfProduct,
+		Size:              product.Size,
+		Color:             product.Color,
+		StartDate:         product.StartDate,
+		EndDate:           product.EndDate,
+		SellerID:          product.SellerId,
+		PhotoURL:          product.Photos,
+	}
 	h.Log.Info("Wishlist retrieved successfully")
-	c.JSON(200, req)
+	c.JSON(200, res)
 }
